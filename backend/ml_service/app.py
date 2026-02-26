@@ -427,8 +427,13 @@ def historical_comparison():
 
 # ======================== MAIN ========================
 
+import os
+
 if __name__ == '__main__':
     print("[INFO] Loading ML model...")
     load_best_model()
-    print("[INFO] Starting Demand Forecasting API on port 5001...")
-    app.run(host='0.0.0.0', port=5001, debug=True)
+
+    port=int(os.environ.get("PORT",5001))
+
+    print(f"[INFO] Starting Demand Forecasting API on port {port}...")
+    app.run(host='0.0.0.0',port=port)
