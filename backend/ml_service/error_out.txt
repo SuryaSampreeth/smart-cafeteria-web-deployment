@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+    data_pipeline.run_pipeline()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Sprint1-final-before-testing\backend\ml_service\data_pipeline.py", line 321, in run_pipeline
+    semester_dates, exam_dates, holiday_dates, vacation_dates = load_academic_calendar()
+                                                                ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Sprint1-final-before-testing\backend\ml_service\data_pipeline.py", line 202, in load_academic_calendar
+    rng = pd.date_range(exam['start'], exam['end'], freq='D')
+  File "C:\Users\chsai\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\datetimes.py", line 1008, in date_range
+    dtarr = DatetimeArray._generate_range(
+        start=start,
+    ...<7 lines>...
+        **kwargs,
+    )
+  File "C:\Users\chsai\AppData\Roaming\Python\Python313\site-packages\pandas\core\arrays\datetimes.py", line 417, in _generate_range
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Of the four parameters: start, end, periods, and freq, exactly three must be specified
