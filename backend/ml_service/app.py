@@ -429,11 +429,13 @@ def historical_comparison():
 
 import os
 
+# Load model at module level so it works with gunicorn AND direct python runs.
+# When Render uses gunicorn, the `if __name__ == '__main__'` block is NEVER
+# executed, so the model would never be loaded without this line.
+print("[INFO] Loading ML model at startup...")
+load_best_model()
+
 if __name__ == '__main__':
-    print("[INFO] Loading ML model...")
-    load_best_model()
-
-    port=int(os.environ.get("PORT",5001))
-
+    port = int(os.environ.get("PORT", 5001))
     print(f"[INFO] Starting Demand Forecasting API on port {port}...")
-    app.run(host='0.0.0.0',port=port)
+    app.run(host='0.0.0.0', port=port)
