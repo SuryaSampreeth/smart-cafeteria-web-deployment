@@ -7,17 +7,12 @@ import { Platform } from 'react-native';
  * This file stores global configuration values used across the app.
  *
  * API_URL:
- * - On Web: uses localhost since both the browser and backend are on the same machine.
- * - On Mobile (Android/iOS): uses the LAN IP from EXPO_PUBLIC_API_URL in .env,
- *   so the physical device can reach the backend over Wi-Fi.
+ * - Uses EXPO_PUBLIC_API_URL from .env for both Web and Mobile.
+ * - Falls back to localhost:5000 for local development if env var is not set.
  */
 const getApiUrl = () => {
-    // On web, the browser and backend are on the same machine, so localhost works directly.
-    // Using the LAN IP on web causes firewall/timeout issues.
-    if (Platform.OS === 'web') {
-        return 'http://localhost:5000/api';
-    }
-    // On mobile, we need the LAN IP so the physical device can reach the backend over Wi-Fi.
+    // Use env variable for all platforms so production (Render) URL works on both web and mobile.
+    // Falls back to localhost only when EXPO_PUBLIC_API_URL is not defined (local dev).
     return process.env.EXPO_PUBLIC_API_URL || Constants.expoConfig?.extra?.apiUrl || 'http://localhost:5000/api';
 };
 
