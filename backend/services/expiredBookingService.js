@@ -1,6 +1,7 @@
 const Booking = require('../models/Booking');
 const Slot = require('../models/Slot');
 const { updateQueuePositions } = require('../utils/queueManager');
+const { getNowIST, getCurrentTimeStringIST } = require('../utils/istTime');
 
 /*
  * This service automatically expires bookings that are still pending
@@ -13,10 +14,10 @@ const { updateQueuePositions } = require('../utils/queueManager');
  */
 const checkAndExpireBookings = async () => {
     try {
-        const now = new Date();
-        const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const now = getNowIST();
+        const currentTime = getCurrentTimeStringIST();
 
-        console.log(`[${new Date().toLocaleTimeString()}] Running expired booking check...`);
+        console.log(`[${now.toUTCString().slice(17, 25)} IST] Running expired booking check...`);
 
         // Find all pending bookings
         const pendingBookings = await Booking.find({
