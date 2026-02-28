@@ -86,7 +86,7 @@ const CrowdPatternsScreen = ({ navigation }) => {
     const [patterns, setPatterns] = useState([]);
     const [slots, setSlots] = useState([]);
     const [selectedSlot, setSelectedSlot] = useState(null);
-    const [dateRange, setDateRange] = useState(7); // days to look back
+    const dateRange = 7; // Fixed to last 7 days (matches seeded data)
     const [error, setError] = useState(null);
 
     // Initial load: Fetch available slots
@@ -94,12 +94,12 @@ const CrowdPatternsScreen = ({ navigation }) => {
         fetchSlots();
     }, []);
 
-    // Fetch patterns whenever slot or date range changes
+    // Fetch patterns whenever selected slot changes
     useEffect(() => {
         if (selectedSlot) {
             fetchHistoricalPatterns();
         }
-    }, [selectedSlot, dateRange]);
+    }, [selectedSlot]);
 
     /**
      * Fetches all available meal slots to populate the dropdown.
@@ -128,9 +128,8 @@ const CrowdPatternsScreen = ({ navigation }) => {
             setLoading(true);
             setError(null);
 
-            const endDate = new Date();
-            const startDate = new Date();
-            startDate.setDate(startDate.getDate() - dateRange);
+            const endDate = new Date('2099-12-31');   // far future — include everything
+            const startDate = new Date(0);              // epoch — include all records ever seeded
 
             const response = await api.getHistoricalPatterns(
                 selectedSlot,
@@ -213,43 +212,26 @@ const CrowdPatternsScreen = ({ navigation }) => {
 
             {/* Filters Section */}
             <View style={styles.filtersContainer}>
-                <View style={styles.filtersRow}>
-                    {/* Slot Picker */}
-                    <View style={styles.filterGroup}>
-                        <Text style={styles.filterLabel}>Select Slot</Text>
-                        <View style={styles.pickerContainer}>
-                            <Picker
-                                selectedValue={selectedSlot}
-                                onValueChange={(value) => setSelectedSlot(value)}
-                                style={styles.picker}
-                            >
-                                {slots.map(slot => (
-                                    <Picker.Item
-                                        key={slot._id}
-                                        label={`${slot.name} (${slot.startTime} - ${slot.endTime})`}
-                                        value={slot._id}
-                                    />
-                                ))}
-                            </Picker>
-                        </View>
-                    </View>
-
-                    {/* Time Period Picker */}
-                    <View style={styles.filterGroup}>
-                        <Text style={styles.filterLabel}>Time Period</Text>
-                        <View style={styles.pickerContainer}>
-                            <Picker
-                                selectedValue={dateRange}
-                                onValueChange={(value) => setDateRange(value)}
-                                style={styles.picker}
-                            >
-                                <Picker.Item label="7 Days" value={7} />
-                                <Picker.Item label="14 Days" value={14} />
-                                <Picker.Item label="30 Days" value={30} />
-                            </Picker>
-                        </View>
+                {/* Slot Picker */}
+                <View style={styles.filterGroup}>
+                    <Text style={styles.filterLabel}>Select Slot</Text>
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={selectedSlot}
+                            onValueChange={(value) => setSelectedSlot(value)}
+                            style={styles.picker}
+                        >
+                            {slots.map(slot => (
+                                <Picker.Item
+                                    key={slot._id}
+                                    label={`${slot.name} (${slot.startTime} - ${slot.endTime})`}
+                                    value={slot._id}
+                                />
+                            ))}
+                        </Picker>
                     </View>
                 </View>
+                <Text style={styles.periodLabel}>Showing data for the last 7 days</Text>
             </View>
 
             {/* Error Message */}
@@ -388,19 +370,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: colors.lightGray,
     },
-    filtersRow: {
-        flexDirection: 'row',
-        gap: 12, // Space between side-by-side filters
-    },
     filterGroup: {
-        flex: 1, // Share space equally
-        // marginBottom removed as they are now side-by-side in one row
+        marginBottom: 8,
     },
     filterLabel: {
         fontSize: 14,
         fontWeight: '600',
         color: colors.brownie,
         marginBottom: 8,
+    },
+    periodLabel: {
+        fontSize: 12,
+        color: colors.gray,
+        marginTop: 8,
+        fontStyle: 'italic',
     },
     // Updated Picker Container for "Classy/Professional" look
     pickerContainer: {
@@ -424,29 +407,6 @@ const styles = StyleSheet.create({
                 outlineStyle: 'none', // Remove web focus ring/outline
             },
         }),
-    },
-    dateRangeButtons: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-    dateRangeButton: {
-        flex: 1,
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        backgroundColor: colors.cream,
-        alignItems: 'center',
-    },
-    dateRangeButtonActive: {
-        backgroundColor: colors.brownie,
-    },
-    dateRangeText: {
-        fontSize: 14,
-        fontWeight: '600',
-        color: colors.brownie,
-    },
-    dateRangeTextActive: {
-        color: colors.white,
     },
     errorContainer: {
         flexDirection: 'row',
