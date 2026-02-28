@@ -6,8 +6,6 @@ Serves forecast predictions from trained models.
 Endpoints:
     GET  /api/health              — Health check
     GET  /api/forecast/daily      — Next 7 days forecast
-    GET  /api/forecast/weekly     — Next 4 weeks forecast
-    GET  /api/forecast/monthly    — Next 3 months forecast
     GET  /api/forecast/accuracy   — Model accuracy metrics
     POST /api/forecast/retrain    — Trigger model retraining
 
@@ -222,6 +220,16 @@ def generate_forecast(days):
 
 
 # ======================== API ROUTES ========================
+
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({
+        'status': 'ok',
+        'service': 'Smart Cafeteria ML Service',
+        'model_loaded': loaded_model is not None,
+        'model_name': loaded_model_name,
+    })
+
 
 @app.route('/api/health', methods=['GET'])
 def health():
