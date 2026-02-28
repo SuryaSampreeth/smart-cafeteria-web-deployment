@@ -4,6 +4,7 @@ const Booking = require('../models/Booking');
 const Slot = require('../models/Slot');
 const SlotTemplate = require('../models/SlotTemplate');
 const { determineCrowdLevel } = require('./crowdTrackingService');
+const { getNowIST } = require('../utils/istTime');
 
 /*
  * This function processes yesterday’s crowd data.
