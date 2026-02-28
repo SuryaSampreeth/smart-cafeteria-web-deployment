@@ -249,7 +249,7 @@ const predictWaitTime = async (slotId, queuePosition) => {
         if (!slot) throw new Error('Slot not found');
 
         // Find historical data for the current hour over the last 7 days
-        const currentHour = new Date().getHours();
+        const currentHour = getNowIST().getUTCHours();
         const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
         const predictions = await CrowdPrediction.find({
