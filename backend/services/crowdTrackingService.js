@@ -2,6 +2,7 @@ const CrowdData = require('../models/CrowdData');
 const Booking = require('../models/Booking');
 const Slot = require('../models/Slot');
 const { getOrCreateTodaySlots } = require('../utils/slotManager');
+const { getNowIST, getCurrentTimeStringIST } = require('../utils/istTime');
 
 // Threshold values used to classify crowd levels (in percentage)
 const CROWD_THRESHOLDS = {
@@ -60,8 +61,8 @@ const calculateAvgWaitTime = async (slotId) => {
 const captureOccupancySnapshot = async () => {
     try {
         const todaySlots = await getOrCreateTodaySlots();
-        const now = new Date();
-        const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const now = getNowIST();
+        const currentTime = getCurrentTimeStringIST();
         const activeSlots = todaySlots.filter(slot => currentTime < slot.endTime);
         const snapshots = [];
 
@@ -99,7 +100,7 @@ const captureOccupancySnapshot = async () => {
         }
 
         if (snapshots.length > 0) {
-            console.log(`✅ Captured ${snapshots.length} occupancy snapshots at ${new Date().toLocaleTimeString()}`);
+            console.log(`✅ Captured ${snapshots.length} occupancy snapshots at ${getNowIST().toUTCString().slice(17, 25)} IST`);
         }
         return snapshots;
     } catch (error) {
@@ -136,8 +137,8 @@ const getCurrentCrowdLevel = async (slotId = null, forceCalculate = false) => {
 
                 let finalActiveBookings = activeBookings;
                 let finalOccupancyRate = occupancyRate;
-                const now = new Date();
-                const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                const now = getNowIST();
+                const currentTime = getCurrentTimeStringIST();
 
                 // If a specific slot is requested but it's not currently active, zero its stats.
                 if (currentTime > slot.endTime) {
@@ -159,8 +160,8 @@ const getCurrentCrowdLevel = async (slotId = null, forceCalculate = false) => {
 
             let finalActiveBookings = latestSnapshot.activeBookings;
             let finalOccupancyRate = latestSnapshot.occupancyRate;
-            const now = new Date();
-            const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const now = getNowIST();
+            const currentTime = getCurrentTimeStringIST();
 
             if (currentTime > latestSnapshot.slotId.endTime) {
                 finalActiveBookings = 0;
@@ -180,8 +181,8 @@ const getCurrentCrowdLevel = async (slotId = null, forceCalculate = false) => {
         } else {
             // Get latest status for ALL today's slots
             const slots = await getOrCreateTodaySlots();
-            const now = new Date();
-            const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const now = getNowIST();
+            const currentTime = getCurrentTimeStringIST();
             const crowdLevels = [];
 
             for (const slot of slots) {
@@ -215,7 +216,7 @@ const getCurrentCrowdLevel = async (slotId = null, forceCalculate = false) => {
                         occupancyRate: isActive ? occupancyRate : 0,
                         crowdLevel: determineCrowdLevel(isActive ? occupancyRate : 0),
                         avgWaitTime: isActive ? await calculateAvgWaitTime(slot._id) : 0,
-                        timestamp: new Date(),
+                        timestamp: getNowIST(),
                         isActive: isActive, // Dynamically computed strictly
                     });
                 } else {
