@@ -1,12 +1,12 @@
 const SlotTemplate = require('../models/SlotTemplate');
 const Slot = require('../models/Slot');
+const { getTodayStringIST } = require('./istTime');
 
 /*
  * Returns the current date in YYYY-MM-DD format based on the server's local timezone.
  */
 const getTodayDateString = () => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    return getTodayStringIST();
 };
 
 /*
