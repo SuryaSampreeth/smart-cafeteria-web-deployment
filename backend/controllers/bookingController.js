@@ -5,6 +5,7 @@ const { generateTokenNumber } = require('../utils/tokenGenerator');
 const { getNextQueuePosition, updateQueuePositions } = require('../utils/queueManager');
 const { predictWaitTime } = require('../services/crowdPredictionService');
 const { performAlertCheck } = require('../services/alertService');
+const { getCurrentTimeStringIST } = require('../utils/istTime');
 
 /*
  * This function is used to create a new booking for a student.
@@ -31,8 +32,7 @@ const createBooking = async (req, res) => {
         }
 
         // Validate that the slot hasn't ended already
-        const now = new Date();
-        const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const currentTime = getCurrentTimeStringIST();
         if (currentTime >= slot.endTime) {
             return res.status(400).json({ message: 'Slot time has already ended' });
         }
@@ -242,7 +242,6 @@ const getAllMyBookings = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 module.exports = {
     createBooking,
     getMyTokens,
