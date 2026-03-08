@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # ─────────────────────────────────────────────
+  # 1. Deploy Backend → Render
+  # ─────────────────────────────────────────────
+  deploy-backend:
+    name: Deploy Backend to Render
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render deploy (Backend)
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            --request POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}" \
+          | grep -q "^2" && echo "Deploy triggered successfully." \
+          || (echo "Deploy hook failed!" && exit 1)
+
+  # ─────────────────────────────────────────────
+  # 2. Deploy ML Service → Render
+  # ─────────────────────────────────────────────
+  deploy-ml:
+    name: Deploy ML Service to Render
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render deploy (ML Service)
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            --request POST "${{ secrets.RENDER_ML_DEPLOY_HOOK }}" \
+          | grep -q "^2" && echo "Deploy triggered successfully." \
+          || (echo "Deploy hook failed!" && exit 1)
+
+  # ─────────────────────────────────────────────
+  # 3. Deploy Frontend → Vercel
+  # ─────────────────────────────────────────────
+  deploy-frontend:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: frontend
