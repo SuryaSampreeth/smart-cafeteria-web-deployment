@@ -24,3 +24,4 @@ const generateTokenNumber = async (slotId, slotName) => {
 };
 
 module.exports = { generateTokenNumber };
+//CSS
