@@ -81,6 +81,8 @@ jobs:
           cd frontend
           npm ci
           npm run build
+        env:
+          DEBUG: expo:*
 
       - name: Deploy to Vercel (Production)
         uses: amondnet/vercel-action@v25

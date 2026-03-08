@@ -36,4 +36,6 @@ jobs:
         run: npm ci
 
       - name: Export web build (build check)
-        run: npx expo export --platform web
+        run: npm run build
+        env:
+          DEBUG: expo:*
