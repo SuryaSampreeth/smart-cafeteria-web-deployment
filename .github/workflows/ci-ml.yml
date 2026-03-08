@@ -1,0 +1,39 @@
+name: CI — ML Service
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend/ml_service/**'
+      - '.github/workflows/ci-ml.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/ml_service/**'
+
+jobs:
+  test-ml:
+    name: Test ML Service (Python)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/ml_service
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/ml_service/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+
+      - name: Run tests
+        run: pytest test_app.py -v
