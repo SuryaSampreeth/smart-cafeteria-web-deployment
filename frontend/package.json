@@ -31,5 +31,8 @@
     "react-native-svg": "^15.15.1",
     "react-native-web": "^0.21.0"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }
