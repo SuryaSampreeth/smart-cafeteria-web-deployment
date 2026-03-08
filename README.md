@@ -1,5 +1,8 @@
 # Smart Cafeteria Management System
 
+[![CI](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci.yml)
+[![Deploy](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/deploy.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/deploy.yml)
+
 A comprehensive digital solution for managing cafeteria operations, designed to streamline the food ordering process, reduce wait times, and improve the overall dining experience for students and staff.
 
 ## Overview
@@ -266,6 +269,42 @@ The backend server will run on `http://localhost:5000`
 - Manage users
 - Monitor system performance
 - Track revenue and bookings
+
+## CI/CD Pipeline
+
+This project uses **GitHub Actions** for automated testing and deployment.
+
+### Workflows
+
+| Workflow | Trigger | Jobs |
+|---|---|---|
+| **CI** (`ci.yml`) | Every PR or push to `main` | `test-backend`, `test-ml`, `test-frontend` |
+| **Deploy** (`deploy.yml`) | Push to `main` only | `deploy-backend`, `deploy-ml`, `deploy-frontend` |
+
+### Branch Strategy
+
+- **`main`** — production branch. Merging here triggers an automatic deploy to all three services.
+- **Feature branches** — open a PR to `main` to trigger CI tests before merging.
+
+### Required GitHub Secrets
+
+Add the following secrets under **Settings → Secrets and variables → Actions** in your GitHub repository:
+
+| Secret | Description | Where to get it |
+|---|---|---|
+| `RENDER_BACKEND_DEPLOY_HOOK` | Deploy hook URL for the Node.js backend | Render Dashboard → Backend service → Settings → Deploy Hook |
+| `RENDER_ML_DEPLOY_HOOK` | Deploy hook URL for the ML/Flask service | Render Dashboard → ML service → Settings → Deploy Hook |
+| `VERCEL_TOKEN` | Vercel personal access token | [vercel.com/account/tokens](https://vercel.com/account/tokens) |
+| `VERCEL_ORG_ID` | Your Vercel team/org ID | Run `vercel link` locally → `.vercel/project.json` |
+| `VERCEL_PROJECT_ID` | Your Vercel project ID | Run `vercel link` locally → `.vercel/project.json` |
+
+### Live Deployments
+
+| Service | URL |
+|---|---|
+| Frontend (Vercel) | https://smart-cafeteria-web-deployment.vercel.app/ |
+| Backend API (Render) | https://backend-api-rxpg.onrender.com/ |
+| ML Service (Render) | https://ml-service-azkv.onrender.com/ |
 
 ## Contributing
 
