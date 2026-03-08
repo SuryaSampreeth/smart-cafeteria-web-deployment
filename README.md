@@ -1,6 +1,8 @@
 # Smart Cafeteria Management System
 
-[![CI](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci.yml)
+[![CI — Backend](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-backend.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-backend.yml)
+[![CI — ML Service](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-ml.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-ml.yml)
+[![CI — Frontend](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-frontend.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-frontend.yml)
 [![Deploy](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/deploy.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/deploy.yml)
 
 A comprehensive digital solution for managing cafeteria operations, designed to streamline the food ordering process, reduce wait times, and improve the overall dining experience for students and staff.
