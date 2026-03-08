@@ -1,6 +1,3 @@
 {
-    "buildCommand": "npm run build",
-    "installCommand": "npm install",
-    "outputDirectory": "dist",
-    "framework": "create-react-app"
+    "outputDirectory": "dist"
 }
