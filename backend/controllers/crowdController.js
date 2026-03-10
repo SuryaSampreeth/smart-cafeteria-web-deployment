@@ -23,7 +23,7 @@ const { getOrCreateTodaySlots } = require('../utils/slotManager');
  */
 const getCurrentCrowdLevels = async (req, res) => {
     try {
-        const crowdLevels = await getCurrentCrowdLevel();
+        const crowdLevels = await getCurrentCrowdLevel(null, true);
 
         res.json({
             success: true,
@@ -168,7 +168,7 @@ const getSlotPeakHours = async (req, res) => {
  */
 const getStaffCrowdDashboard = async (req, res) => {
     try {
-        const crowdLevels = await getCurrentCrowdLevel();
+        const crowdLevels = await getCurrentCrowdLevel(null, true);
 
         // fetch all active alerts
         const activeAlerts = await getActiveAlerts();
@@ -220,7 +220,7 @@ const getAdminCrowdAnalytics = async (req, res) => {
         const analyzeDays = days ? parseInt(days) : 7;
 
         // Get real-time crowd levels
-        const currentLevels = await getCurrentCrowdLevel();
+        const currentLevels = await getCurrentCrowdLevel(null, true);
 
         // Calculate peak hours for all active slots dynamically
         const allSlots = await getOrCreateTodaySlots();
