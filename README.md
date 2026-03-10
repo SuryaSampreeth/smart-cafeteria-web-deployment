@@ -1,327 +1,291 @@
 # Smart Cafeteria Management System
 
 [![CI — Backend](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-backend.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-backend.yml)
-[![CI — ML Service](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-ml.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-ml.yml)
 [![CI — Frontend](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-frontend.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/ci-frontend.yml)
 [![Deploy](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/deploy.yml/badge.svg)](https://github.com/SuryaSampreeth/smart-cafeteria-web-deployment/actions/workflows/deploy.yml)
 
-A comprehensive digital solution for managing cafeteria operations, designed to streamline the food ordering process, reduce wait times, and improve the overall dining experience for students and staff.
+## Table of Contents
+
+- [Overview](#overview)
+- [System Architecture](#system-architecture)
+- [Deployment Tech-Stack](#deployment-tech-stack)
+- [Technology Stack](#technology-stack)
+- [Project Folder Structure](#4-project-folder-structure)
+- [Project Architecture](#project-architecture)
+- [Getting Started](#getting-started)
+  - [Backend Setup](#backend-setup)
+  - [ML Service Setup](#2-ml-service-setup-full-stackbackend-roles)
+  - [Frontend Setup](#3-frontend-setup)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Branch Strategy](#branch-strategy)
+- [Monitoring & Logging](#monitiring--logging)
+- [API Endpoints](#api-endpoints)
+- [Live Deployments](#live-deployments)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Overview
+The Smart Cafeteria Management System is a full-stack application that enables students to pre-book meals, track queue status, and manage orders efficiently.
 
-The Smart Cafeteria Management System is a full-stack application that enables students to pre-book meals, view real-time queue status, and manage their orders efficiently. The system provides role-based access for students, staff, and administrators, each with tailored functionalities to support smooth cafeteria operations.
+The system provides role-based access for:
 
-Students can browse the menu, place orders, and receive token numbers for pickup. Staff members can manage order fulfillment and update order statuses in real-time. Administrators have complete oversight of the system, including menu management, user administration, and analytics dashboards to track cafeteria performance.
+Students – Meal booking and order tracking
 
-## Key Features
+Staff – Queue and order management
 
-- **User Authentication**: Secure registration and login system with JWT-based authentication
-- **Role-Based Access Control**: Separate interfaces and permissions for students, staff, and administrators
-- **Menu Management**: Dynamic menu system with item availability and pricing
-- **Booking System**: Pre-order meals with token-based queue management
-- **Real-Time Updates**: Live status tracking for orders and queue positions
-- **Admin Dashboard**: Comprehensive analytics including active tokens, served orders, revenue tracking, and user statistics
-- **Staff Interface**: Efficient order management and fulfillment workflow
-- **Profile Management**: User profile viewing and management capabilities
+Administrators – Menu management and analytics
 
-## Tech Stack
+The project is deployed using modern DevOps practices, including automated CI/CD pipelines, cloud hosting.
+
+
+## System Architecture
+### Frontend Service
+
+React Native (Expo Go)
+
+Hosted on Vercel
+
+Provides UI for students, staff, and administrators
+
+### Backend API Service
+
+Node.js + Express REST API
+
+Hosted on Render
+
+Handles authentication, bookings, queue management, and analytics
+
+### ml_service API
+
+Python + Flask
+
+Hosted on Render
+
+Performs crowd prediction and demand forecasting
+
+### Database Layer
+
+MongoDB Atlas cloud database
+
+Stores users, bookings, menus, and analytics data
+
+## Deployment Tech-Stack
+This project uses cloud-managed services to ensure scalability and reliability.
+
+
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | Vercel | Hosting React Native EXPO Go |
+| **Backend** | Render | Node.js REST API |
+| **ML Service** | Render | Python ML |
+| **Database** | MongoDB Atlas | cloud database | 
+| **Dev Tools** | GitHub Actions | Automated build, test, deploy | 
+
+## Technology Stack
 
 ### Backend
+Node.js
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JSON Web Tokens (JWT)
-- **Password Security**: bcryptjs for password hashing
-- **Validation**: express-validator
-- **Environment Management**: dotenv
-- **CORS**: Cross-Origin Resource Sharing enabled
-- **Development Tools**: Nodemon for hot reloading
+Express.js
+
+MongoDB with Mongoose ODM
+
+JWT Authentication
+
+bcryptjs password hashing
+
+dotenv environment management
+
+express-validator input validation
 
 ### Frontend
+React Native with Expo
 
-- **Framework**: React Native with Expo
-- **Navigation**: React Navigation (Native Stack & Bottom Tabs)
-- **State Management**: React Context API
-- **HTTP Client**: Axios
-- **UI Components**: Custom components with React Native
-- **Charts**: react-native-chart-kit for data visualization
-- **Secure Storage**: expo-secure-store for token management
-- **Platform Support**: iOS, Android, and Web
+React Navigation
 
-## Project Structure
+React Context API
 
-```
-smart-cafetria-model-2/
+Axios HTTP client
+
+react-native-chart-kit
+
+### ML Service
+Python
+
+Flask
+
+Pandas
+
+Scikit-learn
+
+TensorFlow
+
+### DevOps & Deployment
+GitHub Actions
+
+Vercel
+
+Render
+
+MongoDB Atlas
+
+## 4. Project Folder Structure
+
+```text
+smart-cafeteria/
 │
-├── backend/
-│   ├── config/
-│   │   └── db.js                    # Database connection configuration
-│   │
-│   ├── controllers/
-│   │   ├── adminController.js       # Admin operations logic
-│   │   ├── authController.js        # Authentication logic
-│   │   ├── bookingController.js     # Booking management logic
-│   │   ├── menuController.js        # Menu operations logic
-│   │   └── staffController.js       # Staff operations logic
-│   │
-│   ├── middleware/
-│   │   ├── auth.js                  # JWT authentication middleware
-│   │   └── roleCheck.js             # Role-based authorization middleware
-│   │
-│   ├── models/
-│   │   ├── Booking.js               # Booking schema
-│   │   ├── Menu.js                  # Menu schema
-│   │   ├── MenuItem.js              # Menu item schema
-│   │   ├── Slot.js                  # Time slot schema
-│   │   └── User.js                  # User schema
-│   │
-│   ├── routes/
-│   │   ├── admin.js                 # Admin routes
-│   │   ├── auth.js                  # Authentication routes
-│   │   ├── booking.js               # Booking routes
-│   │   ├── menu.js                  # Menu routes
-│   │   └── staff.js                 # Staff routes
-│   │
-│   ├── scripts/
-│   │   └── seedAdmin.js             # Database seeding script
-│   │
-│   ├── utils/
-│   │   └── validators.js            # Input validation utilities
-│   │
-│   ├── .env                         # Environment variables
-│   ├── .gitignore                   # Git ignore rules
-│   ├── package.json                 # Backend dependencies
-│   └── server.js                    # Application entry point
-│
-├── frontend/
-│   ├── assets/                      # Images and static assets
-│   │
+├── frontend/                # React Native Mobile Application
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── BookingCard.js       # Booking display component
-│   │   │   ├── LoadingSpinner.js    # Loading indicator
-│   │   │   ├── MenuItemCard.js      # Menu item display
-│   │   │   ├── OrderCard.js         # Order display component
-│   │   │   └── StatCard.js          # Statistics card component
-│   │   │
-│   │   ├── config/
-│   │   │   └── api.js               # API configuration
-│   │   │
-│   │   ├── context/
-│   │   │   └── AuthContext.js       # Authentication context
-│   │   │
-│   │   ├── navigation/
-│   │   │   └── AppNavigator.js      # Navigation configuration
-│   │   │
-│   │   ├── screens/
-│   │   │   ├── admin/
-│   │   │   │   ├── AdminHomeScreen.js
-│   │   │   │   ├── ManageMenuScreen.js
-│   │   │   │   └── ManageUsersScreen.js
-│   │   │   │
-│   │   │   ├── auth/
-│   │   │   │   ├── LoginScreen.js
-│   │   │   │   └── RegisterScreen.js
-│   │   │   │
-│   │   │   ├── staff/
-│   │   │   │   ├── OrderManagementScreen.js
-│   │   │   │   └── StaffHomeScreen.js
-│   │   │   │
-│   │   │   └── student/
-│   │   │       ├── BookingScreen.js
-│   │   │       ├── ProfileScreen.js
-│   │   │       ├── StudentHomeScreen.js
-│   │   │       └── ViewMenuScreen.js
-│   │   │
-│   │   ├── services/
-│   │   │   └── api.js               # API service layer
-│   │   │
-│   │   ├── styles/
-│   │   │   ├── colors.js            # Color palette
-│   │   │   ├── commonStyles.js      # Shared styles
-│   │   │   └── typography.js        # Typography definitions
-│   │   │
-│   │   └── utils/
-│   │       ├── storage.js           # Secure storage utilities
-│   │       └── validators.js        # Form validation
-│   │
-│   ├── .env                         # Frontend environment variables
-│   ├── .gitignore                   # Git ignore rules
-│   ├── App.js                       # Application root component
-│   ├── app.json                     # Expo configuration
-│   ├── index.js                     # Entry point
-│   └── package.json                 # Frontend dependencies
+│   │   ├── components/      # Common & Feature-specific UI
+│   │   ├── screens/         # Organized by Student, Staff, Admin
+│   │   ├── context/         # Auth & Global State management
+│   │   ├── navigation/      # Stack & Tab based routing
+│   │   └── services/        # Axios API service layer
 │
-├── QUICKSTART.md                    # Quick start guide
-└── README.md                        # This file
+├── backend/                 # API Server & Business Logic
+│   ├── controllers/         # Logic for Auth, Booking, Crowd, Menu
+│   ├── routes/              # API Endpoints mapping
+│   ├── models/              # MongoDB/Mongoose Schemas
+│   ├── services/            # Background Workers (Crowd Tracking, Alerts)
+│   ├── utils/               # Token generation & Queue Managers
+│   ├── ml_service/          # Python/Flask Machine Learning Hub
+│   │   ├── app.py           # ML API Entry Point (Port 5001)
+│   │   ├── models/          # Trained Model Binaries (XGBoost, LSTM)
+│   │   └── data/            # Processed Datasets
+│   └── server.js            # Node.js Application Entry Point (Port 5000)
+│
+└── QUICKSTART.md            # Rapid setup instructions
 ```
+
+## Project Architecture
+![Architecture Diagram](architecture.jpeg)
 
 ## Getting Started
+###Backend Setup
 
-### Prerequisites
+```bash
+cd backend
+npm install
+# Configure .env with MONGODB_URI and JWT_SECRET
+npm run seed  # Create admin & initial slots
+npm run dev   # Start Node server on port 5000
+```
 
-- Node.js (v14 or higher)
-- MongoDB Atlas account or local MongoDB installation
-- Expo CLI (for frontend development)
-- npm or yarn package manager
+#### **2. ML Service Setup (Full-Stack/Backend Roles)**
+```bash
+cd backend/ml_service
+pip install -r requirements.txt
+python app.py  # Start ML API on port 5001
+```
 
-### Backend Setup
-
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure environment variables in `.env`:
-   ```
-   PORT=5000
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret_key
-   NODE_ENV=development
-   ```
-
-4. Seed the admin user (optional):
-   ```bash
-   npm run seed
-   ```
-
-5. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-The backend server will run on `http://localhost:5000`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure the API endpoint in `src/config/api.js` to point to your backend server
-
-4. Start the Expo development server:
-   ```bash
-   npm start
-   ```
-
-5. Run on your preferred platform:
-   - Press `a` for Android
-   - Press `i` for iOS
-   - Press `w` for Web
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-
-### Bookings
-- `GET /api/bookings` - Get user bookings
-- `POST /api/bookings` - Create new booking
-- `PUT /api/bookings/:id` - Update booking status
-- `DELETE /api/bookings/:id` - Cancel booking
-
-### Menu
-- `GET /api/menu` - Get all menu items
-- `POST /api/menu` - Add menu item (Admin only)
-- `PUT /api/menu/:id` - Update menu item (Admin only)
-- `DELETE /api/menu/:id` - Delete menu item (Admin only)
-
-### Staff
-- `GET /api/staff/orders` - Get pending orders
-- `PUT /api/staff/orders/:id` - Update order status
-
-### Admin
-- `GET /api/admin/stats` - Get dashboard statistics
-- `GET /api/admin/users` - Get all users
-- `PUT /api/admin/users/:id` - Update user details
-
-## User Roles
-
-### Student
-- Browse menu items
-- Place food orders
-- View booking history
-- Track order status
-- Manage profile
-
-### Staff
-- View pending orders
-- Update order status (preparing, ready, completed)
-- Manage order queue
-- View order details
-
-### Administrator
-- Full system access
-- Manage menu items (add, edit, delete)
-- View analytics and statistics
-- Manage users
-- Monitor system performance
-- Track revenue and bookings
+#### **3. Frontend Setup**
+```bash
+cd frontend
+npm install
+# Set EXPO_PUBLIC_API_URL in .env to your Local IP
+npx expo start
+```
 
 ## CI/CD Pipeline
+This project uses GitHub Actions for automated testing and deployment.
+Pipeline Workflow
+1.Code Push / Pull Request
 
-This project uses **GitHub Actions** for automated testing and deployment.
+2.Continuous Integration
 
-### Workflows
+   Backend tests
 
-| Workflow | Trigger | Jobs |
-|---|---|---|
-| **CI** (`ci.yml`) | Every PR or push to `main` | `test-backend`, `test-ml`, `test-frontend` |
-| **Deploy** (`deploy.yml`) | Push to `main` only | `deploy-backend`, `deploy-ml`, `deploy-frontend` |
+  ML service tests
 
-### Branch Strategy
+  Frontend build validation
 
-- **`main`** — production branch. Merging here triggers an automatic deploy to all three services.
-- **Feature branches** — open a PR to `main` to trigger CI tests before merging.
+3. Build Stage
 
-### Required GitHub Secrets
+  Install dependencies
 
-Add the following secrets under **Settings → Secrets and variables → Actions** in your GitHub repository:
+  Run lint checks
 
-| Secret | Description | Where to get it |
-|---|---|---|
-| `RENDER_BACKEND_DEPLOY_HOOK` | Deploy hook URL for the Node.js backend | Render Dashboard → Backend service → Settings → Deploy Hook |
-| `RENDER_ML_DEPLOY_HOOK` | Deploy hook URL for the ML/Flask service | Render Dashboard → ML service → Settings → Deploy Hook |
-| `VERCEL_TOKEN` | Vercel personal access token | [vercel.com/account/tokens](https://vercel.com/account/tokens) |
-| `VERCEL_ORG_ID` | Your Vercel team/org ID | Run `vercel link` locally → `.vercel/project.json` |
-| `VERCEL_PROJECT_ID` | Your Vercel project ID | Run `vercel link` locally → `.vercel/project.json` |
+4. Deployment Stage
 
-### Live Deployments
+  Backend deployed to Render
 
-| Service | URL |
-|---|---|
-| Frontend (Vercel) | https://smart-cafeteria-web-deployment.vercel.app/ |
-| Backend API (Render) | https://backend-api-rxpg.onrender.com/ |
-| ML Service (Render) | https://ml-service-azkv.onrender.com/ |
+  ML service deployed to Render
 
-## Contributing
+  Frontend deployed to Vercel
 
-Contributions are welcome. Please follow these steps:
+## Branch Strategy
+main: Production branch (auto deployment)
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a pull request
+## Deployment Architecture
 
-## License
+## Monitiring & Logging
+Monitoring is handled using platform dashboards
+Render Logs → Backend and ML runtime logs
+
+Vercel Analytics → Frontend deployment monitoring
+
+GitHub Actions Logs → CI/CD pipeline logs
+
+
+## API Endpoints
+### Authentication
+
+POST `/api/auth/register`
+POST `/api/auth/login`
+
+### Bookings
+
+GET `/api/bookings`
+POST `/api/bookings`
+PUT `/api/bookings/:id`
+DELETE `/api/bookings/:id`
+
+### Menu
+
+GET `/api/menu`
+POST `/api/menu`
+PUT `/api/menu/:id`
+DELETE `/api/menu/:id`
+
+### Staff
+
+GET `/api/staff/orders`
+PUT `/api/staff/orders/:id`
+
+### Admin
+
+GET `/api/admin/stats`
+GET `/api/admin/users`
+PUT `/api/admin/users/:id`
+
+
+## Live Deployments
+Service	URL
+Frontend	
+https://smart-cafeteria-web-deployment.vercel.app/
+Backend API	
+https://backend-api-rxpg.onrender.com/api
+ML Service	
+https://ml-service-azkv.onrender.com/
+
+##Contributing
+
+Fork the repository
+
+Create a feature branch
+
+git checkout -b feature/new-feature
+
+Commit changes
+
+git commit -m "Add new feature"
+
+Push branch
+
+git push origin feature/new-feature
+
+Open a Pull Request
+
+License
 
 This project is licensed under the ISC License.
-
-## Contact
-
-For questions or support, please open an issue in the repository.
