@@ -43,34 +43,34 @@ The project is deployed using modern DevOps practices, including automated CI/CD
 
 React Native (Expo Go)
 
-Hosted on Vercel
+- Hosted on Vercel
 
-Provides UI for students, staff, and administrators
+- Provides UI for students, staff, and administrators
 
 ### Backend API Service
 
-Node.js + Express REST API
+- Node.js + Express REST API
 
-Hosted on Render
+- Hosted on Render
 
-Handles authentication, bookings, queue management, and analytics
+- Handles authentication, bookings, queue management, and analytics
 
 ### ml_service API
 
-Python + Flask
+- Python + Flask
 
-Hosted on Render
+- Hosted on Render
 
-Performs crowd prediction and demand forecasting
+- Performs crowd prediction and demand forecasting
 
 ### Database Layer
 
-MongoDB Atlas cloud database
+- MongoDB Atlas cloud database
 
-Stores users, bookings, menus, and analytics data
+- Stores users, bookings, menus, and analytics data
 
 ## Deployment Tech-Stack
-This project uses cloud-managed services to ensure scalability and reliability.
+ This project uses cloud-managed services to ensure scalability and reliability.
 
 
 | Layer | Technology |
