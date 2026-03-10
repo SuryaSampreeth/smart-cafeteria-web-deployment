@@ -189,22 +189,24 @@ npx expo start
 ## CI/CD Pipeline
 This project uses GitHub Actions for automated testing and deployment.
 Pipeline Workflow
-1.Code Push / Pull Request
 
-2.Continuous Integration
+
+### Code Push / Pull Request
+
+### Continuous Integration
 - Backend tests
 
 - ML service tests
 
 - Frontend build validation
 
-3. Build Stage
+### Build Stage
 
 - Install dependencies
 
 - Run lint checks
 
-4. Deployment Stage
+### Deployment Stage
 
 - Backend deployed to Render
 
@@ -258,10 +260,28 @@ Pipeline Workflow
 
 
 ## Live Deployments
-Service	URL
-- Frontend	
-`https://smart-cafeteria-web-deployment.vercel.app/`
-- Backend API	
-`https://backend-api-rxpg.onrender.com/api`
-- ML Service	
-`https://ml-service-azkv.onrender.com/`
+### Frontend
+Platform: **Vercel**  
+https://smart-cafeteria-web-deployment.vercel.app/
+
+### Backend
+Platform: **Render**  
+https://backend-api-rxpg.onrender.com/api
+
+### ML Service
+Platform: **Render**  
+https://ml-service-azkv.onrender.com/
+
+##Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (git checkout -b feature/YourFeature)
+3. Commit your changes (git commit -m 'Add YourFeature')
+4. Push to the branch (git push origin feature/YourFeature)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License.
