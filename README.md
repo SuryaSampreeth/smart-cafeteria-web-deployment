@@ -84,50 +84,50 @@ React Native (Expo Go)
 ## Technology Stack
 
 ### Backend
-Node.js
+- Node.js
 
-Express.js
+- Express.js
 
-MongoDB with Mongoose ODM
+- MongoDB with Mongoose ODM
 
-JWT Authentication
+- JWT Authentication
 
-bcryptjs password hashing
+- bcryptjs password hashing
 
-dotenv environment management
+- dotenv environment management
 
-express-validator input validation
+- express-validator input validation
 
 ### Frontend
-React Native with Expo
+- React Native with Expo
 
-React Navigation
+- React Navigation
 
-React Context API
+- React Context API
 
-Axios HTTP client
+- Axios HTTP client
 
-react-native-chart-kit
+- react-native-chart-kit
 
 ### ML Service
-Python
+- Python
 
-Flask
+- Flask
 
-Pandas
+- Pandas
 
-Scikit-learn
+- Scikit-learn
 
-TensorFlow
+- TensorFlow
 
 ### DevOps & Deployment
-GitHub Actions
+- GitHub Actions
 
-Vercel
+- Vercel
 
-Render
+- Render
 
-MongoDB Atlas
+- MongoDB Atlas
 
 ## 4. Project Folder Structure
 
@@ -192,81 +192,80 @@ Pipeline Workflow
 1.Code Push / Pull Request
 
 2.Continuous Integration
+- Backend tests
 
-   Backend tests
+- ML service tests
 
-  ML service tests
-
-  Frontend build validation
+- Frontend build validation
 
 3. Build Stage
 
-  Install dependencies
+- Install dependencies
 
-  Run lint checks
+- Run lint checks
 
 4. Deployment Stage
 
-  Backend deployed to Render
+- Backend deployed to Render
 
-  ML service deployed to Render
+- ML service deployed to Render
 
-  Frontend deployed to Vercel
+- Frontend deployed to Vercel
 
 ## Branch Strategy
-main: Production branch (auto deployment)
+- main: Production branch (auto deployment)
 
 ## Deployment Architecture
 
 ## Monitiring & Logging
-Monitoring is handled using platform dashboards
-Render Logs → Backend and ML runtime logs
+- Monitoring is handled using platform dashboards
+- Render Logs → Backend and ML runtime logs
 
-Vercel Analytics → Frontend deployment monitoring
+- Vercel Analytics → Frontend deployment monitoring
 
-GitHub Actions Logs → CI/CD pipeline logs
+- GitHub Actions Logs → CI/CD pipeline logs
 
 
 ## API Endpoints
 ### Authentication
 
-POST `/api/auth/register`
-POST `/api/auth/login`
+- POST `/api/auth/register`
+- POST `/api/auth/login`
 
 ### Bookings
 
-GET `/api/bookings`
-POST `/api/bookings`
-PUT `/api/bookings/:id`
-DELETE `/api/bookings/:id`
+- GET `/api/bookings`
+- POST `/api/bookings`
+- PUT `/api/bookings/:id`
+- DELETE `/api/bookings/:id`
 
 ### Menu
 
-GET `/api/menu`
-POST `/api/menu`
-PUT `/api/menu/:id`
-DELETE `/api/menu/:id`
+- GET `/api/menu`
+- POST `/api/menu`
+- PUT `/api/menu/:id`
+- DELETE `/api/menu/:id`
 
 ### Staff
 
-GET `/api/staff/orders`
-PUT `/api/staff/orders/:id`
+- GET `/api/staff/orders`
+- PUT `/api/staff/orders/:id`
 
 ### Admin
 
-GET `/api/admin/stats`
-GET `/api/admin/users`
-PUT `/api/admin/users/:id`
+- GET `/api/admin/stats`
+- GET `/api/admin/users`
+- PUT `/api/admin/users/:id`
 
 
 ## Live Deployments
 Service	URL
-Frontend	
-https://smart-cafeteria-web-deployment.vercel.app/
-Backend API	
-https://backend-api-rxpg.onrender.com/api
-ML Service	
-https://ml-service-azkv.onrender.com/
+- Frontend	
+`https://smart-cafeteria-web-deployment.vercel.app/`
+- Backend API	
+`https://backend-api-rxpg.onrender.com/api`
+- ML Service	
+`https://ml-service-azkv.onrender.com/`
 
 ##Contributing
 
