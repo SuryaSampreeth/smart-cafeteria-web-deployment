@@ -98,16 +98,12 @@ const getAnalytics = async (req, res) => {
 
         const { getOrCreateTodaySlots } = require('../utils/slotManager');
         const todaySlots = await getOrCreateTodaySlots();
-        const now = new Date();
-        const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        const activeSlotIds = todaySlots
-            .filter(slot => currentTime <= slot.endTime)
-            .map(slot => slot._id);
+        const todaySlotIds = todaySlots.map(slot => slot._id);
 
-        // Count tokens that are either pending or currently being served from ACTIVE slots
+        // Count tokens that are either pending or currently being served from today's slots
         const activeTokens = await Booking.countDocuments({
             status: { $in: ['pending', 'serving'] },
-            slotId: { $in: activeSlotIds }
+            slotId: { $in: todaySlotIds }
         });
 
         // Count how many tokens are served today
@@ -118,8 +114,8 @@ const getAnalytics = async (req, res) => {
 
         // Count cancelled bookings for today
         const cancelledToday = await Booking.countDocuments({
-            status: 'cancelled',
-            cancelledAt: { $gte: today },
+            status: { $in: ['cancelled', 'expired'] },
+            bookedAt: { $gte: today },
         });
 
         // Count total student users
@@ -145,7 +141,7 @@ const getAnalytics = async (req, res) => {
         });
 
         res.json({
-            totalBookingsToday: activeTokens + servedToday,
+            totalBookingsToday,
             activeTokens,
             servedToday,
             cancelledToday,
@@ -207,10 +203,6 @@ const getSlotWiseData = async (req, res) => {
                     endTime: slot ? slot.endTime : '23:59',
                     ...data,
                 };
-            })
-            .filter((data) => {
-                // Filter to include only currently active slots
-                return currentTime <= data.endTime;
             });
 
         res.json(result);
