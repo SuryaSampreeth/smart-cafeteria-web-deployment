@@ -91,14 +91,14 @@ const getAnalytics = async (req, res) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Count total bookings made today
-        const totalBookingsToday = await Booking.countDocuments({
-            bookedAt: { $gte: today },
-        });
-
         const { getOrCreateTodaySlots } = require('../utils/slotManager');
         const todaySlots = await getOrCreateTodaySlots();
         const todaySlotIds = todaySlots.map(slot => slot._id);
+
+        // Count total bookings made today for today's slots
+        const totalBookingsToday = await Booking.countDocuments({
+            slotId: { $in: todaySlotIds }
+        });
 
         // Count tokens that are either pending or currently being served from today's slots
         const activeTokens = await Booking.countDocuments({
@@ -109,13 +109,13 @@ const getAnalytics = async (req, res) => {
         // Count how many tokens are served today
         const servedToday = await Booking.countDocuments({
             status: 'served',
-            servedAt: { $gte: today },
+            slotId: { $in: todaySlotIds }
         });
 
-        // Count cancelled bookings for today
+        // Count cancelled bookings for today's slots
         const cancelledToday = await Booking.countDocuments({
             status: { $in: ['cancelled', 'expired'] },
-            bookedAt: { $gte: today },
+            slotId: { $in: todaySlotIds }
         });
 
         // Count total student users
@@ -244,12 +244,13 @@ const getStaffPerformance = async (req, res) => {
  */
 const getWasteTracking = async (req, res) => {
     try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const { getOrCreateTodaySlots } = require('../utils/slotManager');
+        const todaySlots = await getOrCreateTodaySlots();
+        const todaySlotIds = todaySlots.map(slot => slot._id);
 
         const cancelledBookings = await Booking.find({
             status: { $in: ['cancelled', 'expired'] },
-            bookedAt: { $gte: today },
+            slotId: { $in: todaySlotIds }
         }).populate('items.menuItemId', 'name price');
 
         let totalWasteValue = 0;
@@ -290,10 +291,11 @@ const getWasteTracking = async (req, res) => {
  */
 const getSustainabilityReport = async (req, res) => {
     try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const { getOrCreateTodaySlots } = require('../utils/slotManager');
+        const todaySlots = await getOrCreateTodaySlots();
+        const todaySlotIds = todaySlots.map(slot => slot._id);
 
-        const allBookingsToday = await Booking.find({ bookedAt: { $gte: today } });
+        const allBookingsToday = await Booking.find({ slotId: { $in: todaySlotIds } });
 
         const totalBookings = allBookingsToday.length;
         const servedBookings = allBookingsToday.filter(b => b.status === 'served').length;
