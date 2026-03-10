@@ -14,6 +14,7 @@ import {
     Pressable, // Use Pressable for better hover handling
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import { menuAPI, bookingAPI } from '../../services/api';
@@ -53,12 +54,29 @@ const foodImages = {
  * Helper function to safely resolve image sources.
  * Returns a mapped local image if available, otherwise defaults to Idli.
  */
-const getImageSource = (imageUrl) => {
-    // If it's a local filename, use the mapped image
+const getImageSource = (imageUrl, itemName) => {
+    // 1. If it's a known local asset filename
     if (imageUrl && foodImages[imageUrl]) {
         return foodImages[imageUrl];
     }
-    // Fallback to a default image if key not found
+
+    // 2. Try matching by item name (smart fallback)
+    if (itemName) {
+        const normalizedName = itemName.toLowerCase();
+        for (const key in foodImages) {
+            const cleanKey = key.split('.')[0].replace('_', ' '); // 'paneer_curry.jpg' -> 'paneer curry'
+            if (normalizedName.includes(cleanKey)) {
+                return foodImages[key];
+            }
+        }
+    }
+
+    // 3. If it's a remote URL
+    if (imageUrl && imageUrl.startsWith('http')) {
+        return { uri: imageUrl };
+    }
+
+    // 4. Fallback to a default image
     return foodImages['idli.jpg'];
 };
 
@@ -73,6 +91,8 @@ const getImageSource = (imageUrl) => {
  * It supports both creating a new booking and modifying an existing one (via route params).
  */
 const BookingScreen = ({ navigation, route }) => {
+    const insets = useSafeAreaInsets();
+
     // Extract parameters if modifying an existing booking
     const { modifyMode = false, bookingId, existingSlot, existingItems, tokenNumber } = route?.params || {};
 
@@ -303,7 +323,7 @@ const BookingScreen = ({ navigation, route }) => {
             <View style={styles.container}>
                 <LinearGradient
                     colors={[colors.brownieDark, colors.brownie]}
-                    style={styles.header}
+                    style={[styles.header, { paddingTop: (insets.top || 0) + 20 }]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
                 >
@@ -338,7 +358,7 @@ const BookingScreen = ({ navigation, route }) => {
             <View style={styles.container}>
                 <LinearGradient
                     colors={[colors.brownieDark, colors.brownie]}
-                    style={styles.header}
+                    style={[styles.header, { paddingTop: (insets.top || 0) + 20 }]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
                 >
@@ -356,7 +376,7 @@ const BookingScreen = ({ navigation, route }) => {
                                 <View style={styles.menuInfo}>
                                     {/* Food Image */}
                                     <Image
-                                        source={getImageSource(item.imageUrl)}
+                                        source={getImageSource(item.imageUrl, item.name)}
                                         style={styles.foodImage}
                                         resizeMode="cover"
                                     />
