@@ -158,7 +158,7 @@ smart-cafeteria/
 ```
 
 ## Project Architecture
-![Architecture Diagram](architecture.jpeg)
+![Architecture Diagram](Architecture.jpeg)
 
 ## Getting Started
 ###Backend Setup
@@ -215,7 +215,6 @@ Pipeline Workflow
 ## Branch Strategy
 - main: Production branch (auto deployment)
 
-## Deployment Architecture
 
 ## Monitiring & Logging
 - Monitoring is handled using platform dashboards
@@ -266,25 +265,3 @@ Service	URL
 `https://backend-api-rxpg.onrender.com/api`
 - ML Service	
 `https://ml-service-azkv.onrender.com/`
-
-##Contributing
-
-Fork the repository
-
-Create a feature branch
-
-git checkout -b feature/new-feature
-
-Commit changes
-
-git commit -m "Add new feature"
-
-Push branch
-
-git push origin feature/new-feature
-
-Open a Pull Request
-
-License
-
-This project is licensed under the ISC License.
