@@ -1,5 +1,4 @@
 const Booking = require('../models/Booking');
-const { getNowIST } = require('./istTime');
 
 /*
  * This function generates a unique token number for each booking.
@@ -7,13 +6,10 @@ const { getNowIST } = require('./istTime');
  * Example formats: B001 (Breakfast), L023 (Lunch).
  */
 const generateTokenNumber = async (slotId, slotName) => {
-    const today = getNowIST();
-    today.setUTCHours(0, 0, 0, 0); // Midnight in IST (since getNowIST shifts to IST)
-
-    // Count how many bookings are already made for this slot today
+    // Count how many bookings are already made for this specific slot instance
+    // Since slotId refers to a unique date/time instance, we don't need additional date filters
     const count = await Booking.countDocuments({
-        slotId,
-        bookedAt: { $gte: today },
+        slotId
     });
 
     // Generate token using slot initial and sequence number
@@ -24,4 +20,3 @@ const generateTokenNumber = async (slotId, slotName) => {
 };
 
 module.exports = { generateTokenNumber };
-//CSS
