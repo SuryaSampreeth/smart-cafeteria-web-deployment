@@ -127,7 +127,7 @@ const getAnalytics = async (req, res) => {
         // Calculate total revenue from served bookings today
         const servedBookings = await Booking.find({
             status: 'served',
-            servedAt: { $gte: today },
+            slotId: { $in: todaySlotIds }
         }).populate('items.menuItemId', 'price');
 
         let totalRevenue = 0;
@@ -160,14 +160,15 @@ const getAnalytics = async (req, res) => {
  */
 const getSlotWiseData = async (req, res) => {
     try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const { getOrCreateTodaySlots } = require('../utils/slotManager');
+        const todaySlots = await getOrCreateTodaySlots();
+        const todaySlotIds = todaySlots.map(slot => slot._id);
 
         // Group bookings by slotId and count based on status
         const slotData = await Booking.aggregate([
             {
                 $match: {
-                    bookedAt: { $gte: today },
+                    slotId: { $in: todaySlotIds },
                 },
             },
             {
