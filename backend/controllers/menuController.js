@@ -1,3 +1,4 @@
+//For deployment
 const SlotTemplate = require('../models/SlotTemplate');
 const Slot = require('../models/Slot');
 const { getOrCreateTodaySlots } = require('../utils/slotManager');
